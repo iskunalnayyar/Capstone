@@ -18,13 +18,13 @@ The plan of action is broken down into the following tasks:
 •	Improving the Genetic Algorithm if necessary
 
 ##### The milestones may be planned as follows:
-Milestone 1	Literature Review, Dataset & Problem Statement formulation, Cleaning Dataset
-Milestone 2	Building the Neural Network and implementing the Genetic Algorithm
-Milestone 3	Iterating on the Genetic Algorithm as necessary, finalizing report and poster.
+- Milestone 1	Literature Review, Dataset & Problem Statement formulation, Cleaning Dataset
+- Milestone 2	Building the Neural Network and implementing the Genetic Algorithm
+- Milestone 3	Iterating on the Genetic Algorithm as necessary, finalizing report and poster.
 
 ### Possible hurdles
-The two biggest hurdles that I may need to overcome are:
-•	Finding the ‘right’ dataset.
-•	The Genetic Algorithm getting stuck in a local maximum or local minimum, depending on the parameter.
-•	 Providing the best result very early on in the generation cycle. 
-•	GA being sensitive to the initial population.
+##### The two biggest hurdles that I may need to overcome are:
+-	Finding the ‘right’ dataset.
+-	The Genetic Algorithm getting stuck in a local maximum or local minimum, depending on the parameter.
+-	 Providing the best result very early on in the generation cycle. 
+-	GA being sensitive to the initial population.
