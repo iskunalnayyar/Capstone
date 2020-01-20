@@ -14,6 +14,7 @@ class MessingWithData:
         self.file = filename  # filename
 
     def read_file(self):
+        # do this to fix reading problem to read_csv - dtype={"user_id": int, "username": object}
         file_1 = pd.read_csv(os.path.join(self.dir, self.file))
         # (8921483, 83) for train
         # (7853253, 82) for test
