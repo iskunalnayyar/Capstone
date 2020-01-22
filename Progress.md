@@ -22,8 +22,8 @@ These columns have too many missing values to be of any use and thus are dropped
 
 _**This makes the total count of the columns to 75, down from 83**_
 
-I am making two set of training files:
-1. Drops all nan records from the datafram (this is going to end up having ~4.9M records)
+I am making two sets of training files:
+1. Drops all nan records from the dataframe (this is going to end up having ~4.9M records)
 2. Replaces all nan values with the median of that particular column (this is going to end up having ~6.5M)
 
 
