@@ -1,10 +1,11 @@
 """
-Messing with Data file
+Messing with the Data file
 """
 
 import os
 
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 
 class MessingWithData:
@@ -100,20 +101,40 @@ class MessingWithData:
             'Wdft_RegionIdentifier': 'float16',
             'HasDetections': 'float32',
         }
+
+        # drop unnecessary features - have too many missing values to be of any use
+        drop_list = {'PuaMode', 'Census_ProcessorClass', 'Census_InternalBatteryType', 'Census_IsFlightingInternal',
+                     'Census_ThresholdOptIn', 'Census_IsWIMBootEnabled', 'SmartScreen', 'DefaultBrowsersIdentifier'}
+
         test_df = pd.read_csv(os.path.join(self.dir, self.file), dtype=col_dtypes)
-        print(test_df.columns.to_list())
-        # (8921483, 83) for train
-        # (7853253, 82) for test
+        test_df = test_df.drop(columns=drop_list)
+
         print(test_df.shape)
-        print(test_df.size)
-        test_df.fillna(test_df.median())
         print(test_df)
         print(test_df.describe())
         print(test_df.info())
+        X_train, X_test, y_train, y_test = self.train_test_split(test_df)
+
+    def train_test_split(self, dataframe):
+        """
+        Splits train, test given a data frame
+        :param dataframe: dataframe to be split
+        :return: X_train, X_test, y_train, y_test
+        """
+        return train_test_split(dataframe, test_size=0.20, random_state=42)
+
+    def convert_categorical_to_int(self, dataframe):
+        """
+        Converts the categorical, Object features to integer
+        :param dataframe: the datafile in csv format
+        :return: dataframe with integer values
+        """
+
+        pass
 
 
 def main():
-    m1 = MessingWithData('/Users/k.n./Downloads/microsoft-malware-prediction', 'test.csv')
+    m1 = MessingWithData('/Users/k.n./Downloads/microsoft-malware-prediction', 'train.csv')
     m1.read_file()
 
 
