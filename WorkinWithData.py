@@ -3,8 +3,10 @@ Messing with the Data file
 """
 
 import os
+from random import randint
 
 import pandas as pd
+from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 
 
@@ -106,36 +108,87 @@ class MessingWithData:
         drop_list = {'PuaMode', 'Census_ProcessorClass', 'Census_InternalBatteryType', 'Census_IsFlightingInternal',
                      'Census_ThresholdOptIn', 'Census_IsWIMBootEnabled', 'SmartScreen', 'DefaultBrowsersIdentifier'}
 
-        test_df = pd.read_csv(os.path.join(self.dir, self.file), dtype=col_dtypes)
-        test_df = test_df.drop(columns=drop_list)
+        drop_these = {'AvSigVersion', 'IsBeta', 'IsSxsPassiveMode', 'AVProductsEnabled', 'HasTpm', 'IsProtected',
+                      'AutoSampleOptIn', 'SMode', 'UacLuaenable', 'Census_HasOpticalDiskDrive',
+                      'Census_IsFlightsDisabled',
+                      'Census_IsPortableOperatingSystem', 'Census_IsSecureBootEnabled', 'Census_IsVirtualDevice',
+                      'Census_IsTouchEnabled', 'Census_IsPenCapable', 'Census_IsAlwaysOnAlwaysConnectedCapable',
+                      'Wdft_IsGamer'}
 
-        print(test_df.shape)
-        print(test_df)
-        print(test_df.describe())
-        print(test_df.info())
-        X_train, X_test, y_train, y_test = self.train_test_split(test_df)
+        test_df = pd.read_csv(os.path.join(self.dir, self.file), dtype=col_dtypes, index_col='MachineIdentifier',
+                              header=0)
+        test_df = test_df.drop(columns=drop_these)
+        print(test_df.columns.to_list())
+        cols_before_scal = test_df.columns.to_list()
+        # precautionary measure
+        test_df = test_df.dropna()
+        y = test_df['HasDetections']
+        scaled_df = test_df.drop(columns='HasDetections')
+        mapping, scaled_df = self.conver_categorical_to_int(scaled_df, col_dtypes)
+        scaled_df = self.scaling_data(scaled_df)
+        print(scaled_df.columns.to_list())
+        cols_after_scal = scaled_df.columns.to_list()
 
-    def train_test_split(self, dataframe):
+        X_train, X_test, y_train, y_test = self.split_train_test(scaled_df, y)
+
+        return X_train, X_test, y_train, y_test
+
+    def split_train_test(self, x, y):
         """
         Splits train, test given a data frame
         :param dataframe: dataframe to be split
         :return: X_train, X_test, y_train, y_test
         """
-        return train_test_split(dataframe, test_size=0.20, random_state=42)
+        return train_test_split(x, y, test_size=0.20, random_state=42)
 
-    def convert_categorical_to_int(self, dataframe):
+    def conver_categorical_to_int(self, dataframe, col_types):
         """
-        Converts the categorical, Object features to integer
-        :param dataframe: the datafile in csv format
-        :return: dataframe with integer values
+        This is gonna map all unique values in column to keys
+        :param dataframe: input dataframe
+        :param col_types:
+        :return:
         """
+        mapping = dict()
+        columns_list = dataframe.columns.to_list()
+        print("Mapping...")
+        for key, val in col_types.items():
+            temp_dict = dict()
+            if key in columns_list:
+                if val == 'object':
+                    temp_list = dataframe[key].unique()
+                    print(key, len(temp_list))
 
-        pass
+                    for x in temp_list:
+                        value = randint(0, 1000)
+                        if value not in mapping.values():
+                            temp_dict[x] = value
+                    dataframe[key].replace(temp_dict, inplace=True)
+            mapping[key] = temp_dict
+
+        print(dataframe.head())
+
+        print()
+        print(mapping.keys())
+        dataframe.head()
+
+        print("Mapping done!")
+        return mapping, dataframe
+
+    def scaling_data(self, dataframe):
+        """
+        Performing normalization
+        :param dataframe:
+        :return:
+        """
+        min_max_scaler = preprocessing.MinMaxScaler()
+        scaled_df = min_max_scaler.fit_transform(dataframe)
+        df = pd.DataFrame(scaled_df)
+        return df
 
 
 def main():
-    m1 = MessingWithData('/Users/k.n./Downloads/microsoft-malware-prediction', 'train.csv')
-    m1.read_file()
+    md = MessingWithData('/Users/k.n./Downloads/microsoft-malware-prediction', 'median.csv')
+    md.read_file()
 
 
 if __name__ == '__main__':
