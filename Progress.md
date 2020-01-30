@@ -23,11 +23,16 @@ These columns have too many missing values to be of any use and thus are dropped
 _**This makes the total count of the columns to 75, down from 83**_
 
 I am making two sets of training files:
-1. Drops all nan records from the dataframe (this is going to end up having ~4.9M records)
-2. Replaces all nan values with the median of that particular column (this is going to end up having ~6.5M)
-
+1. Drops all nan records from the dataframe (this is going to end up having ~6.9M records)
+    Based on skewness and missing data
+2. Replaces all nan values with the median of that particular column (this is going to end up having ~8.5M)
 
 
 #### Task 2 - Getting a base classifier accuracy
+Things to do :
+1. Encode features
+2. Do feature engineering
+Use the os version numbers to make it into a time column. And subtract the earliest time from the column to make it a numeric column
 
+Using the Larger file of the two training files, the base accuracy achieved was 62% on the neural network
 

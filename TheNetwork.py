@@ -16,9 +16,8 @@ class NeuralNetwork:
 
     def define_mode(self):
         model = Sequential()
-        model.add(Dense(64, input_dim=X_train.shape[1], activation='relu'))
+        model.add(Dense(X_train.shape[1], input_dim=X_train.shape[1]))
         model.add(Dense(32, activation='relu'))
-        model.add(Dense(24, activation='relu'))
         model.add(Dense(12, activation='relu'))
         model.add(Dense(1, activation='sigmoid'))
         model.summary()
@@ -26,14 +25,14 @@ class NeuralNetwork:
 
     def train(self, model):
         model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-        model.fit(X_train, y_train, epochs=300, batch_size=256)
+        model.fit(X_train, y_train, epochs=300, batch_size=4086)
         _, acc = model.evaluate(X_test, y_test)
         print('Accuracy: %.2f' % (acc * 100))
 
 
 if __name__ == "__main__":
     print("Reading file")
-    md = MessingWithData('/Users/k.n./Downloads/microsoft-malware-prediction', 'median.csv')
+    md = MessingWithData('/Users/k.n./Downloads/microsoft-malware-prediction', 'train.csv')
     print("Pre-Processing")
     X_train, X_test, y_train, y_test = md.read_file()
     print("Defining Model")
@@ -46,6 +45,6 @@ if __name__ == "__main__":
     # 61.73 % on all features
     # 61.51 % on some deleted features
 
-    # 32 24 12 1
-    # % on all features
+    # 64 32 24 12 1
+    # % on some deleted features
     # 61.38 % on some deleted features

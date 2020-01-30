@@ -105,32 +105,55 @@ class MessingWithData:
         }
 
         # drop unnecessary features - have too many missing values to be of any use
-        drop_list = {'PuaMode', 'Census_ProcessorClass', 'Census_InternalBatteryType', 'Census_IsFlightingInternal',
-                     'Census_ThresholdOptIn', 'Census_IsWIMBootEnabled', 'SmartScreen', 'DefaultBrowsersIdentifier'}
-
-        drop_these = {'AvSigVersion', 'IsBeta', 'IsSxsPassiveMode', 'AVProductsEnabled', 'HasTpm', 'IsProtected',
-                      'AutoSampleOptIn', 'SMode', 'UacLuaenable', 'Census_HasOpticalDiskDrive',
-                      'Census_IsFlightsDisabled',
-                      'Census_IsPortableOperatingSystem', 'Census_IsSecureBootEnabled', 'Census_IsVirtualDevice',
-                      'Census_IsTouchEnabled', 'Census_IsPenCapable', 'Census_IsAlwaysOnAlwaysConnectedCapable',
-                      'Wdft_IsGamer'}
+        drop_list = ['EngineVersion', 'AppVersion', 'AvSigVersion', 'OsBuildLab', 'Census_OSVersion', 'PuaMode',
+                     'Census_PowerPlatformRoleName',
+                     'Census_ProcessorClass', 'DefaultBrowsersIdentifier', 'Census_IsFlightingInternal',
+                     'Census_InternalBatteryType'
+            , 'Census_ThresholdOptIn', 'Census_IsWIMBootEnabled', 'SmartScreen', 'OrganizationIdentifier',
+                     'AutoSampleOptIn', 'SMode', 'Census_IsPortableOperatingSystem', 'Census_DeviceFamily',
+                     'UacLuaenable',
+                     'Census_IsVirtualDevice', 'SkuEdition', 'Census_PrimaryDiskTypeName', 'Census_FlightRing']
+        chunk_list = []
+        drop_these = ['IsBeta', 'IsSxsPassiveMode', 'AVProductsEnabled', 'HasTpm', 'IsProtected',
+                      'OsPlatformSubRelease',
+                      'Census_HasOpticalDiskDrive', 'Census_IsFlightsDisabled', 'Census_IsPenCapable', 'OsVer',
+                      'Census_MDC2FormFactor',
+                      'Census_IsAlwaysOnAlwaysConnectedCapable', 'Wdft_IsGamer', 'ProductName', 'Platform', 'Processor',
+                      'Census_OSBranch']
 
         test_df = pd.read_csv(os.path.join(self.dir, self.file), dtype=col_dtypes, index_col='MachineIdentifier',
-                              header=0)
-        test_df = test_df.drop(columns=drop_these)
-        print(test_df.columns.to_list())
-        cols_before_scal = test_df.columns.to_list()
+                              chunksize=1000000)
+        for chunk in test_df:
+            chunk_list.append(chunk)
+
+        test_df_concat = pd.concat(chunk_list)
+        print(test_df_concat.shape)
+        print(test_df_concat.columns.to_list())
+
+        print()
+        # prints the missing values as per column as a percentage
+        # print((test_df_concat.isnull().sum()/test_df_concat.shape[0]).sort_values(ascending=False))
+
+        test_df_concat = test_df_concat.drop(columns=drop_list + drop_these, axis=1)
+
+        test_df_concat = test_df_concat.dropna()
+        print(test_df_concat.shape)
+        # test_df = test_df.select_dtypes(exclude=['object'])
+
+        # ignore these - 'EngineVersion', 'AppVersion', 'AvSigVersion', 'OsBuildLab', 'Census_OSVersion'
+
+        print(test_df_concat.columns.to_list())
+
         # precautionary measure
-        test_df = test_df.dropna()
-        y = test_df['HasDetections']
-        scaled_df = test_df.drop(columns='HasDetections')
-        mapping, scaled_df = self.conver_categorical_to_int(scaled_df, col_dtypes)
+        test_df_concat = test_df_concat.dropna()
+        y = test_df_concat['HasDetections']
+        scaled_df = test_df_concat.drop(columns='HasDetections')
+        scaled_df = self.conver_categorical_to_int(scaled_df, col_dtypes)
         scaled_df = self.scaling_data(scaled_df)
-        print(scaled_df.columns.to_list())
-        cols_after_scal = scaled_df.columns.to_list()
+        print(scaled_df.shape)
 
         X_train, X_test, y_train, y_test = self.split_train_test(scaled_df, y)
-
+        print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
         return X_train, X_test, y_train, y_test
 
     def split_train_test(self, x, y):
@@ -139,7 +162,7 @@ class MessingWithData:
         :param dataframe: dataframe to be split
         :return: X_train, X_test, y_train, y_test
         """
-        return train_test_split(x, y, test_size=0.20, random_state=42)
+        return train_test_split(x, y, test_size=0.20, random_state=0)
 
     def conver_categorical_to_int(self, dataframe, col_types):
         """
@@ -159,7 +182,7 @@ class MessingWithData:
                     print(key, len(temp_list))
 
                     for x in temp_list:
-                        value = randint(0, 1000)
+                        value = randint(0, 500)
                         if value not in mapping.values():
                             temp_dict[x] = value
                     dataframe[key].replace(temp_dict, inplace=True)
@@ -170,9 +193,8 @@ class MessingWithData:
         print()
         print(mapping.keys())
         dataframe.head()
-
         print("Mapping done!")
-        return mapping, dataframe
+        return dataframe
 
     def scaling_data(self, dataframe):
         """
@@ -187,7 +209,7 @@ class MessingWithData:
 
 
 def main():
-    md = MessingWithData('/Users/k.n./Downloads/microsoft-malware-prediction', 'median.csv')
+    md = MessingWithData('/Users/k.n./Downloads/microsoft-malware-prediction', 'train.csv')
     md.read_file()
 
 
