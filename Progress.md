@@ -31,7 +31,7 @@ I am making two sets of training files:
 
 #### Task 2 - Getting a base classifier accuracy
 Things to do :
-1. _Encode features_
+1. ~~Encode features~~
 2. Do feature engineering
 3. Use the os version numbers to make it into a time column. And subtract the earliest time from the column to make it a numeric column
 4. Do literature review
