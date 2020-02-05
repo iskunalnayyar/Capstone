@@ -26,20 +26,21 @@ I am making two sets of training files:
 1. Drops all nan records from the dataframe (this is going to end up having ~6.9M records)
     Based on skewness and missing data
 2. Replaces all nan values with the median of that particular column (this is going to end up having ~8.5M)
+    Will be using this dataset for now.
 
 
 #### Task 2 - Getting a base classifier accuracy
 Things to do :
-1. Encode features
+1. _Encode features_
 2. Do feature engineering
-Use the os version numbers to make it into a time column. And subtract the earliest time from the column to make it a numeric column
+3. Use the os version numbers to make it into a time column. And subtract the earliest time from the column to make it a numeric column
+4. Do literature review
+5. Come up with Genetic Algorithm 
 
-Using the Larger file of the two training files, the base accuracy achieved was 62% on the neural network
+Using the Larger file of the two training files, the base accuracy achieved was 62% on the neural network using a 3 layer 
+architecture using Keras, viz, Input, dense layer and the output layer with sigmoid activation function.
 
 
-Notes from Neural Networks class for feature selection problem :
-   - L1 penalty norm with just te sign of the weight matrix
-   - Lasso regression
 
 ## Week 3 - ?
 

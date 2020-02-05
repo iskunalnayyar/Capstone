@@ -17,8 +17,8 @@ class NeuralNetwork:
     def define_mode(self):
         model = Sequential()
         model.add(Dense(X_train.shape[1], input_dim=X_train.shape[1]))
-        model.add(Dense(32, activation='relu'))
-        model.add(Dense(12, activation='relu'))
+        model.add(Dense(32, activation='sigmoid'))
+        model.add(Dense(12, activation='sigmoid'))
         model.add(Dense(1, activation='sigmoid'))
         model.summary()
         return model
