@@ -135,7 +135,7 @@ class MessingWithData:
         # print((test_df_concat.isnull().sum()/test_df_concat.shape[0]).sort_values(ascending=False))
 
         test_df_concat = test_df_concat.drop(columns=drop_list + drop_these, axis=1)
-
+        cols_list = test_df_concat.columns.to_list()
         test_df_concat = test_df_concat.dropna()
         print(test_df_concat.shape)
         # test_df = test_df.select_dtypes(exclude=['object'])
@@ -154,7 +154,7 @@ class MessingWithData:
 
         X_train, X_test, y_train, y_test = self.split_train_test(scaled_df, y)
         print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
-        return X_train, X_test, y_train, y_test
+        return X_train, X_test, y_train, y_test, cols_list
 
     def split_train_test(self, x, y):
         """
