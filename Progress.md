@@ -85,3 +85,15 @@ dataset where there's minimal to no correlation. How would the feature selection
 - Add one hidden neuron to the NN and train again.
 
 The proposed wrapper approach is employed on 5 publicly available datasets similar to ones used by the previous approach. 
+
+
+### Genetic Algorithm
+
+The skeleton for the Genetic Algorithm has been implemented.
+The algorithm:
+1. Starts off with a set of 8 randomly selected features
+2. Based off of the accuracy of those 8 features, 2 parents are selected.
+     These 2 parents are crossedover in 2 ways and passed to mutator function
+     Mutator function then mutates 4 random bits and generates 4 more candidates
+3. These candidates are trained on the neural network
+4. Do step 2 & 3until the maximum generation is reached.

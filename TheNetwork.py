@@ -23,9 +23,9 @@ class NeuralNetwork:
 
     def train(self, model, X_train, X_test, y_train, y_test):
         model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-        model.fit(X_train, y_train, epochs=10, batch_size=4086)
+        model.fit(X_train, y_train, epochs=10, batch_size=4086, verbose=2)
         _, acc = model.evaluate(X_test, y_test)
-        return 'Accuracy: %.2f' % (acc * 100)
+        return acc * 100
 
     # 32 12 1
     # 61.73 % on all features
