@@ -1,10 +1,12 @@
 """
 The Network is here
 """
-
 import numpy as np
 from keras import Sequential
 from keras.layers import Dense
+from keras.layers import Dropout
+
+from WorkinWithData import MessingWithData
 
 
 class NeuralNetwork:
@@ -15,17 +17,25 @@ class NeuralNetwork:
     def define_mode(self, shape):
         model = Sequential()
         model.add(Dense(32, input_dim=shape))
-        model.add(Dense(24, activation='sigmoid'))
-        model.add(Dense(12, activation='sigmoid'))
-        model.add(Dense(1, activation='sigmoid'))
+        model.add(Dropout(0.2))
+        model.add(Dense(12, activation='relu'))
+        model.add(Dense(1, activation='relu'))
         model.summary()
         return model
 
     def train(self, model, X_train, X_test, y_train, y_test):
         model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-        model.fit(X_train, y_train, epochs=10, batch_size=4086, verbose=2)
+        history = model.fit(X_train, y_train, epochs=700, verbose=2)
         _, acc = model.evaluate(X_test, y_test)
-        return acc * 100
+        # print(history.history.keys())
+        # plt.plot(history.history['acc'])
+        # plt.plot(history.history['loss'])
+        # plt.title('model accuracy')
+        # plt.ylabel('accuracy')
+        # plt.xlabel('epoch')
+        # plt.legend(['train', 'test'], loc='upper left')
+        # plt.show()
+        return acc
 
     # 32 12 1
     # 61.73 % on all features
@@ -34,3 +44,15 @@ class NeuralNetwork:
     # 64 32 24 12 1
     # % on some deleted features
     # 61.38 % on some deleted features
+
+
+md = MessingWithData('/Users/k.n./Downloads/', 'train.csv')
+print("Pre-Processing")
+X_train, X_test, y_train, y_test, cols_list = md.read_file()
+print("Defining Model")
+nn = NeuralNetwork()
+print(X_train.shape)
+model = nn.define_mode(X_train.shape[1])
+print("Launching the NN now")
+acc = nn.train(model, X_train, X_test, y_train, y_test)
+print("Accuracy ", acc)

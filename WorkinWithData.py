@@ -121,7 +121,7 @@ class MessingWithData:
                       'Census_IsAlwaysOnAlwaysConnectedCapable', 'Wdft_IsGamer', 'ProductName', 'Platform', 'Processor',
                       'Census_OSBranch']
 
-        test_df = pd.read_csv(os.path.join(self.dir, self.file), dtype=col_dtypes, index_col='MachineIdentifier',
+        test_df = pd.read_csv(os.path.join(self.dir, self.file), dtype=col_dtypes, index_col='idNumber',
                               chunksize=1000000)
         for chunk in test_df:
             chunk_list.append(chunk)
@@ -134,7 +134,7 @@ class MessingWithData:
         # prints the missing values as per column as a percentage
         # print((test_df_concat.isnull().sum()/test_df_concat.shape[0]).sort_values(ascending=False))
 
-        test_df_concat = test_df_concat.drop(columns=drop_list + drop_these, axis=1)
+        # test_df_concat = test_df_concat.drop(columns=drop_list, axis=1)
         cols_list = test_df_concat.columns.to_list()
         test_df_concat = test_df_concat.dropna()
         print(test_df_concat.shape)
@@ -146,9 +146,11 @@ class MessingWithData:
 
         # precautionary measure
         test_df_concat = test_df_concat.dropna()
-        y = test_df_concat['HasDetections']
-        scaled_df = test_df_concat.drop(columns='HasDetections')
-        scaled_df = self.conver_categorical_to_int(scaled_df, col_dtypes)
+        # y = test_df_concat['HasDetections']
+        y = test_df_concat['class']
+        # scaled_df = test_df_concat.drop(columns='HasDetections')
+        scaled_df = test_df_concat.drop(columns='class')
+        # scaled_df = self.conver_categorical_to_int(scaled_df, col_dtypes)
         scaled_df = self.scaling_data(scaled_df)
         print(scaled_df.shape)
 
@@ -209,7 +211,7 @@ class MessingWithData:
 
 
 def main():
-    md = MessingWithData('/Users/k.n./Downloads/microsoft-malware-prediction', 'train.csv')
+    md = MessingWithData('/Users/k.n./Downloads/', 'breast-cancer-wisconsin.csv')
     md.read_file()
 
 

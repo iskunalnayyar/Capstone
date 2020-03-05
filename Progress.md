@@ -42,7 +42,7 @@ architecture using Keras, viz, Input, dense layer and the output layer with sigm
 
 
 
-## Week 3 - ?
+## Week 3 - 6
 
 ### Literature Review
 ##### Efficient feature selection using one-pass generalized classifier neural network and binary bat algorithm with a novel fitness function - Akshata K. Naik, Venkatanareshbabu Kuppili & Damodar Reddy Edla
@@ -97,3 +97,25 @@ The algorithm:
      Mutator function then mutates 4 random bits and generates 4 more candidates
 3. These candidates are trained on the neural network
 4. Do step 2 & 3until the maximum generation is reached.
+
+
+## Week 6 - 8
+### Task 1 - Select the optimal # of epochs
+Task to select the optimal # of epochs for the feed-forward network and the dataset resulted in 25 epochs to be the 
+sweetspot for the model to be able to converge, with diminishing results thereafter.
+
+### Task 2 - Uplifting the objective function
+The objective function is now represented by the following equation:
+ - Fn = 0.5 * fs/ft + 0.5* acc
+- where,
+fs is the # of selected features,
+ft is the total # of features in the dataset,
+& acc is the accuracy of the model on the selected features
+
+The following figure shows the Genetic Algorithm in action for the Microsoft malware dataset with the objective function
+set as a function of both the ratio of selected features as well as the accuracy of the model.
+
+![Ga-40-generations-newObjectiveFunction](https://github.com/iskunalnayyar/Capstonegit/New_fitness.png)
+
+### Task 3 - Testing on BreastCancerWisconsin dataset
+Testing on another dataset with 11 features and 1000 records. Where the records were split 60-40 for the classes respectively 

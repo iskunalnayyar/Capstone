@@ -5,6 +5,7 @@ The genetic algorithm lives here
 import keras
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot as plt
 
 from TheNetwork import NeuralNetwork
 from WorkinWithData import MessingWithData
@@ -70,8 +71,12 @@ class GeneticAlgorithm:
             model = nn.define_mode(X_train.shape[1])
             print("Launching the NN now")
             acc = nn.train(model, X_train, X_test, ga.y_train, ga.y_test)
+            fs = 0
+            for x in pop:
+                if x == 1:
+                    fs += 1
             print("Accuracy ", acc)
-            accuracies[idx] = acc
+            accuracies[idx] = 0.5 * acc + 0.5 * (fs / X_train.shape[1])
             idx += 1
 
             keras.backend.clear_session()
@@ -90,9 +95,13 @@ class GeneticAlgorithm:
 
 
 if __name__ == "__main__":
+    # uncomment when using a gpu
+    # print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
+    # with tf.device('/gpu:0'):
+
     ga = GeneticAlgorithm()
     print("Reading file")
-    md = MessingWithData('/Users/k.n./Downloads/microsoft-malware-prediction', 'train.csv')
+    md = MessingWithData('/Users/k.n./Downloads/', 'breast-cancer-wisconsin.csv')
     print("Pre-Processing")
     ga.X_train, ga.X_test, ga.y_train, ga.y_test, cols_list = md.read_file()
     print("Defining Model")
@@ -105,15 +114,18 @@ if __name__ == "__main__":
     new_population = np.random.randint(low=0, high=2, size=pop_shape)
 
     best_outputs = []
-    num_generations = 2
+    num_generations = 10
 
     for generation in range(num_generations):
         print("Generation : ", generation)
+
         accuracies = ga.calculate_fitness(new_population)
         parents = ga.select_pool(new_population, accuracies, 4)
         offspring_crossover = ga.crossover(parents,
                                            offspring_size=(pop_shape[0] - parents.shape[0], len(cols_list) - 1))
-
+        best_outputs.append(np.max(accuracies))
+        # The best result in the current iteration.
+        print("Best result : ", best_outputs[-1])
         offspring_mutation = ga.mutate(offspring_crossover)
         print(offspring_mutation)
         print()
@@ -122,3 +134,8 @@ if __name__ == "__main__":
         print(offspring_crossover)
         new_population[0:parents.shape[0], :] = parents
         new_population[parents.shape[0]:, :] = offspring_mutation
+
+    plt.plot(best_outputs)
+    plt.xlabel("Iteration")
+    plt.ylabel("Fitness")
+    plt.show()
