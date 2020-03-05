@@ -209,11 +209,10 @@ class MessingWithData:
         df = pd.DataFrame(scaled_df)
         return df
 
-
-def main():
-    md = MessingWithData('/Users/k.n./Downloads/', 'breast-cancer-wisconsin.csv')
-    md.read_file()
-
-
-if __name__ == '__main__':
-    main()
+# def main():
+#     md = MessingWithData('/Users/k.n./Downloads/', 'breast-cancer-wisconsin.csv')
+#     md.read_file()
+#
+#
+# if __name__ == '__main__':
+#     main()

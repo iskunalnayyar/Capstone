@@ -6,8 +6,6 @@ from keras import Sequential
 from keras.layers import Dense
 from keras.layers import Dropout
 
-from WorkinWithData import MessingWithData
-
 
 class NeuralNetwork:
 
@@ -25,7 +23,7 @@ class NeuralNetwork:
 
     def train(self, model, X_train, X_test, y_train, y_test):
         model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-        history = model.fit(X_train, y_train, epochs=700, verbose=2)
+        history = model.fit(X_train, y_train, epochs=250, verbose=2)
         _, acc = model.evaluate(X_test, y_test)
         # print(history.history.keys())
         # plt.plot(history.history['acc'])
@@ -45,14 +43,13 @@ class NeuralNetwork:
     # % on some deleted features
     # 61.38 % on some deleted features
 
-
-md = MessingWithData('/Users/k.n./Downloads/', 'train.csv')
-print("Pre-Processing")
-X_train, X_test, y_train, y_test, cols_list = md.read_file()
-print("Defining Model")
-nn = NeuralNetwork()
-print(X_train.shape)
-model = nn.define_mode(X_train.shape[1])
-print("Launching the NN now")
-acc = nn.train(model, X_train, X_test, y_train, y_test)
-print("Accuracy ", acc)
+# md = MessingWithData('/Users/k.n./Downloads/', 'breast-cancer-wisconsin.csv')
+# print("Pre-Processing")
+# X_train, X_test, y_train, y_test, cols_list = md.read_file()
+# print("Defining Model")
+# nn = NeuralNetwork()
+# print(X_train.shape)
+# model = nn.define_mode(X_train.shape[1])
+# print("Launching the NN now")
+# acc = nn.train(model, X_train, X_test, y_train, y_test)
+# print("Accuracy ", acc)

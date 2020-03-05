@@ -118,4 +118,6 @@ set as a function of both the ratio of selected features as well as the accuracy
 ![Ga-40-generations-newObjectiveFunction](https://github.com/iskunalnayyar/Capstone/blob/master/New_fitness.png)
 
 ### Task 3 - Testing on BreastCancerWisconsin dataset
-Testing on another dataset with 11 features and 1000 records. Where the records were split 60-40 for the classes respectively 
+Testing on another dataset with 11 features and 1000 records. Where the records were split 60-40 for the classes respectively
+
+![Ga-10-generations-newObjectiveFunction-Wisconsin](https://github.com/iskunalnayyar/Capstone/blob/master/Wisconsin2.png) 

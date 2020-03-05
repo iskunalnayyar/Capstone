@@ -114,7 +114,7 @@ if __name__ == "__main__":
     new_population = np.random.randint(low=0, high=2, size=pop_shape)
 
     best_outputs = []
-    num_generations = 10
+    num_generations = 40
 
     for generation in range(num_generations):
         print("Generation : ", generation)
