@@ -115,7 +115,7 @@ ft is the total # of features in the dataset,
 The following figure shows the Genetic Algorithm in action for the Microsoft malware dataset with the objective function
 set as a function of both the ratio of selected features as well as the accuracy of the model.
 
-![Ga-40-generations-newObjectiveFunction](https://github.com/iskunalnayyar/Capstonegit/New_fitness.png)
+![Ga-40-generations-newObjectiveFunction](https://github.com/iskunalnayyar/Capstone/blob/master/New_fitness.png)
 
 ### Task 3 - Testing on BreastCancerWisconsin dataset
 Testing on another dataset with 11 features and 1000 records. Where the records were split 60-40 for the classes respectively 
